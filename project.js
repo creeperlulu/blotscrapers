@@ -7,7 +7,7 @@ const skyScrapersIntensity = 12;
 
 
 
-const skyScraperRandomizer = bt.randInRange;
+const randomizer = bt.randInRange;
 var fullWidth;
 const skyScrapers = [];
 const scraperGen = [];
@@ -18,10 +18,10 @@ function createSkyScrapers() {
   fullWidth = 0;
 while (fullWidth < width) {
   turtle.setAngle(90);
-  const tempHeight = skyScraperRandomizer(10,50)
+  const tempHeight = randomizer(10,50)
   turtle.forward(tempHeight);
   turtle.setAngle(0);
-  const tempDivider = skyScraperRandomizer(skyScrapersIntensity, skyScrapersIntensity +25)
+  const tempDivider = randomizer(skyScrapersIntensity, skyScrapersIntensity +25)
   if (fullWidth + (width / tempDivider) >= width) {
     turtle.forward(width - fullWidth);
     turtle.setAngle(-90);
@@ -32,30 +32,49 @@ while (fullWidth < width) {
     turtle.setAngle(-90);
   turtle.forward(tempHeight);
   }
-  fullWidth = fullWidth + (width / tempDivider)
+  fullWidth = fullWidth + (width / tempDivider);
 }
   return turtle.lines();
 }
 
-function createStars(nbr){
-  for (let i = 0; i < nbr; i++) {
-    
-  }
+function createStar(x, y, size){
+    const star = bt.nurbs([[(-1*size)+x, (0*size)+y], [(0*size)+x, (0*size)+y], [(0*size)+x, (1*size)+y]], { steps: 8, degree: 2 });
+    const star2 = bt.nurbs([[(0*size)+x, (1*size)+y], [(0*size)+x, (0*size)+y], [(1*size)+x, (0*size)+y]], { steps: 8, degree: 2 });
+    const star3 = bt.nurbs([[(1*size)+x, (0*size)+y], [(0*size)+x, (0*size)+y], [(0*size)+x, (-1*size)+y]], { steps:8, degree: 2 });
+    const star4 = bt.nurbs([[(0*size)+x, (-1*size)+y], [(0*size)+x, (0*size)+y], [(-1*size)+x, (0*size)+y]], { steps: 8, degree: 2 });
+    var starshape = [];
+    starshape.push(star, star2, star3, star4);
+    return starshape;
 }
 
-const star = bt.nurbs([[0, 0], [1, 0], [1, 1]], { steps: 4, degree: 2 });
-const star2 = bt.nurbs([[0, 0], [0, -1], [1, -1]], { steps: 4, degree: 2 });
-const star3 = bt.nurbs([[0, 0], [-1, 0], [-1, -1]], { steps: 4, degree: 2 });
-const star4 = bt.nurbs([[0, 0], [1, 0], [1, 1]], { steps: 4, degree: 2 });
+function createStars(nbr){
+  var stars = [];
+  var tempX = 0;
+  var tempY = 0;
+  var tempSize = 0;
+  var genstar = [];
+  for (let i = 0; i < nbr; i++) {
+    tempSize = randomizer(0.2,3);
+    tempX = randomizer(0+tempSize/2,width-tempSize/2);
+    tempY = randomizer(0+tempSize/2,height-tempSize/2);
+    genstar = createStar(tempX, tempY, tempSize);
+    console.log(genstar)
+    stars.push(genstar);
+  }
+  return stars;
+}
+
+
 
 // Print the skyscrapers lines
-const u = createSkyScrapers()
-const t = createSkyScrapers()
-//const stars = createStars(nbrStars)
+const u = createSkyScrapers();
+const t = createSkyScrapers();
+//const stars = createStars(nbrStars);
 drawLines(u, {fill:"#FFF"});
 drawLines(u);
 drawLines(t, {fill:"#FFF"});
 drawLines(t);
-drawLines([star]);
+const starrySky = createStars(5);
+drawLines(starrySky);
 
 // Made with ❤ by Creeperlulu
