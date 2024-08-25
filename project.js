@@ -1,7 +1,7 @@
 /*
 @title: Skyscrapers in the starry sky
 @author: Creeperlulu
-@snapshot: Skyscrapersinstarrysky
+@snapshot: skyscrapersinstarrysky.png
 */
 
 // Edit these values to change the look of the artwork!
