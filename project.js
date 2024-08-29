@@ -15,9 +15,10 @@ const minStarSize = 0.1;
 const maxStarSize = 1;
 const moonQuality = 50
 const moonRadius = 28;
-const nbrCraters = 5;
-const waterRepeats = 10;
-const waterHeight = 2
+const nbrCraters = 6;
+const waterRepeats = 50;
+const waterHeight = 5
+const waterWaves = 1
 
 
 // Initialize scene
@@ -49,7 +50,7 @@ while (fullWidth < width) {
   }
   fullWidth = fullWidth + (width / tempDivider);
 }
-  return turtle.lines();
+  return turtle.path;
 }
 
 // Creates a single star
@@ -82,16 +83,15 @@ function createStarrySky(nbr){
 }
 
 function createWater(){
-    // The only time you'll see me use the Pythagorean theorem
   const turtle = new bt.Turtle()
-  turtle.down();
-  turtle.goTo([0, 10]);
   turtle.up();
+  turtle.goTo([0, waterHeight+waterWaves/2]);
+  turtle.down();
   for (let i = 0; i < waterRepeats; i++) {
-    turtle.goTo([turtle.pos[0]+((width/waterRepeats)/2),waterHeight])
-    turtle.goTo([turtle.pos[0]+((width/waterRepeats)/2),waterHeight/2])
+    turtle.goTo([turtle.pos[0]+((width/waterRepeats)/2),waterHeight+waterWaves])
+    turtle.goTo([turtle.pos[0]+((width/waterRepeats)/2),waterHeight+waterWaves/2])
   }
-  return turtle.lines()
+  return turtle.path;
   
 }
 
@@ -116,7 +116,7 @@ const moon = createCircle(width-moonRadius-width/20, height-moonRadius-height/20
 //Craters
 const craters = []
 for (let i = 0; i < nbrCraters; i++){
-  var crater = createCircle(randomizer(150-moonRadius-125/20, 110-moonRadius-125/20), randomizer(110-moonRadius-125/20, 140-moonRadius-125/20), randomizer(moonRadius/30, moonRadius/12), moonQuality);
+  var crater = createCircle(width-moonRadius-width/20+randomizer(20-moonRadius-width/20, 50-moonRadius-height/20), height-moonRadius-height/20 + randomizer(20-moonRadius-height/20, 50-moonRadius-height/20), randomizer(moonRadius/30, moonRadius/10), moonQuality);
     craters.push(crater);
 }
 drawLines(starrySky);
@@ -127,8 +127,8 @@ drawLines(u, {fill:"#FFF"});
 drawLines(u);
 drawLines(t, {fill:"#FFF"});
 drawLines(t);
-console.log(createWater())
-drawLines(createWater());
+const water = createWater()
+drawLines(water);
 
 
 // Made with ❤ by Creeperlulu
